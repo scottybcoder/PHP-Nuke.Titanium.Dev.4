@@ -38,15 +38,17 @@
       Display Writes                           v1.0.0       10/14/2005
 	  Titanium Patched                         v3.0.0       08/26/2019
  ************************************************************************/
-if (!defined('MODULE_FILE')) die('You can\'t access this file directly...');
+if(!defined('MODULE_FILE')): 
+  die('You can\'t access this file directly...');
+endif;
 
 global $storyhome, $topicname, $topicimage, $topictext, $datetime, $user, $cookie, $prefix, $multilingual, $currentlang, $db, $articlecomm, $module_name, $userinfo;
 
-$module_name = basename(dirname(__FILE__));
+$module_name = basename(__DIR__);
 
 get_lang($module_name);
 
-@include_once(NUKE_INCLUDE_DIR."functions_blog.php");
+include_once(NUKE_INCLUDE_DIR."functions_blog.php");
 
 $neconfig = get_blog_configs();
 
@@ -56,23 +58,16 @@ $categories = 1;
 
 automated_blogs();
 
-if ($catid == 0 OR empty($catid)) 
-redirect("modules.php?name=$module_name"); 
+if($catid == 0 || empty($catid)): 
+  redirect("modules.php?name=$module_name"); 
+endif;
 
 switch ($op) 
 {
 
     default:
     case "newindex":
-        if($neconfig["homenumber"] == 0) 
-		{
-            if (isset($userinfo['setstorynum'])) 
-			$storynum = $userinfo['setstorynum']; 
-			else 
-			$storynum = $storyhome; 
-        } 
-		else 
-            $storynum = $neconfig["homenumber"];
+        $storynum = $neconfig["homenumber"] == 0 ? $userinfo['setstorynum'] ?? $storyhome : $neconfig["homenumber"];
         
 		if (!isset($min)) 
 		$min = 0; 
@@ -80,10 +75,7 @@ switch ($op)
 		if (!isset($max)) 
 		$max = $min + $storynum; 
         
-		if ($multilingual == 1) 
-		$querylang = "AND (alanguage='$currentlang' OR alanguage='')"; 
-		else 
-		$querylang = ""; 
+		$querylang = $multilingual == 1 ? "AND (alanguage='$currentlang' OR alanguage='')" : ""; 
 
         include_once(NUKE_BASE_DIR."header.php");
         
@@ -91,7 +83,7 @@ switch ($op)
 		{
             echo "<script>\n";
             echo "<!-- Begin\n";
-            echo "function NewsReadWindow(mypage, myname, w, h, scroll) {\n";
+            echo "function BlogsReadWindow(mypage, myname, w, h, scroll) {\n";
             echo "var winl = (screen.width - w) / 2;\n";
             echo "var wint = (screen.height - h) / 2;\n";
             echo "winprops = 'height='+h+',width='+w+',top='+wint+',left='+winl+',scrollbars='+scroll+''\n";
@@ -112,42 +104,43 @@ switch ($op)
         echo "<table border='0' cellpadding='0' cellspacing='0' width='100%'>\n";
         
 		$a = 0;
-
+        
+		if(!isset($subject))
+		$subject = '';
+		if(!isset($hometext))
+		$hometext = '';
+		if(!isset($bodytext))
+		$bodytext = '';
+	
         while ($artinfo = $db->sql_fetchrow($result)) 
 		{
-            formatTimestamp($artinfo["time"]);
-            $subject = stripslashes(check_html($subject, "nohtml"));
-/*****[BEGIN]******************************************
- [ Mod:     Blog BBCodes                       v1.0.0 ]
- ******************************************************/
-            $artinfo["hometext"] = decode_bbcode(set_smilies(stripslashes($artinfo["hometext"])), 1, true);
-            $artinfo["hometext"] = evo_img_tag_to_resize($artinfo["hometext"]);
-/*****[END]********************************************
- [ Mod:     Blog BBCodes                       v1.0.0 ]
- ******************************************************/
-            $artinfo["notes"] = stripslashes($artinfo["notes"]);
-            $artinfo["sid"] = intval($artinfo["sid"]);
-            $artinfo["aid"] = stripslashes($artinfo["aid"]);
-            $artinfo["title"] = stripslashes(check_html($artinfo["title"], "nohtml"));
-            $artinfo["comments"] = intval($artinfo["comments"]);
-            $artinfo["counter"] = intval($artinfo["counter"]);
-            $artinfo["topic"] = intval($artinfo["topic"]);
-            $artinfo["informant"] = stripslashes($artinfo["informant"]);
-            $artinfo["notes"] = stripslashes($artinfo["notes"]);
-            $artinfo["acomm"] = intval($artinfo["acomm"]);
-            $artinfo["score"] = intval($artinfo["score"]);
-            $artinfo["ratings"] = intval($artinfo["ratings"]);
+            formatTimestamp(isset($artinfo["time"]));
+            $subject = stripslashes((string) check_html($subject, "nohtml"));
+            $artinfo["hometext"] = decode_bbcode(set_smilies(stripslashes((string) $artinfo["hometext"])), 1, true);
+            $artinfo["hometext"] = img_tag_to_resize($artinfo["hometext"]);
+            $artinfo["notes"] = stripslashes((string) $artinfo["notes"]);
+            $artinfo["sid"] = (int) $artinfo["sid"];
+            $artinfo["aid"] = stripslashes((string) $artinfo["aid"]);
+            $artinfo["title"] = stripslashes((string) check_html($artinfo["title"], "nohtml"));
+            $artinfo["comments"] = (int) $artinfo["comments"];
+            $artinfo["counter"] = (int) $artinfo["counter"];
+            $artinfo["topic"] = (int) $artinfo["topic"];
+            $artinfo["informant"] = stripslashes((string) $artinfo["informant"]);
+            $artinfo["notes"] = stripslashes((string) $artinfo["notes"]);
+            $artinfo["acomm"] = (int) $artinfo["acomm"];
+            $artinfo["score"] = (int) $artinfo["score"];
+            $artinfo["ratings"] = (int) $artinfo["ratings"];
             getTopics($artinfo["sid"]);
 
             if($neconfig["texttype"] == 0) 
 			{
-                $introcount = strlen($hometext);
-                $fullcount = strlen($bodytext);
+                $introcount = strlen((string) $hometext);
+                $fullcount = strlen((string) $bodytext);
             } 
 			else 
 			{
-                $introcount = strlen(strip_tags($artinfo["hometext"], "<br />"));
-                $fullcount = strlen($artinfo["bodytext"]);
+                $introcount = strlen(strip_tags((string) $artinfo["hometext"], "<br />"));
+                $fullcount = strlen((string) $artinfo["bodytext"]);
             }
 
             $totalcount = $introcount + $fullcount;
@@ -182,13 +175,13 @@ switch ($op)
               $the_icons .= '&nbsp;<a href="'.$admin_file.'.php?op=RemoveBlog&amp;sid='.$artinfo["sid"].'"><i class="fa fa-times-circle"></i></a>';
             }
 			
-			$read_link = "<a href='modules.php?name=$module_name&amp;file=read_article&amp;sid=".$artinfo["sid"]."$r_options' onclick=\"NewsReadWindow(this.href,'ReadArticle','600','400','yes');return false;\">";
+			$read_link = "<a href='modules.php?name=$module_name&amp;file=read_article&amp;sid=".$artinfo["sid"]."$r_options' onclick=\"BlogsReadWindow(this.href,'ReadArticle','600','400','yes');return false;\">";
             $story_link = "<a href='modules.php?name=$module_name&amp;file=article&amp;sid=".$artinfo["sid"]."$r_options'>";
             $morelink = "( ";
 
             if($neconfig["texttype"] == 0) 
 			{
-                if ($fullcount > 0 OR $artinfo["comments"] > 0 OR $articlecomm == 0 OR $artinfo["acomm"] == 1) 
+                if ($fullcount > 0 || $artinfo["comments"] > 0 || $articlecomm == 0 || $artinfo["acomm"] == 1) 
 				{
                     if($neconfig["readmore"] == 1) 
                         $morelink .= "$read_link<strong>"._READMORE."</strong></a> | ";
@@ -200,7 +193,7 @@ switch ($op)
             } 
 			else 
 			{
-                if ($introcount > 255 OR $fullcount > 0 OR $artinfo["comments"] > 0 OR $articlecomm == 0 OR $artinfo["acomm"] == 1) 
+                if ($introcount > 255 || $fullcount > 0 || $artinfo["comments"] > 0 || $articlecomm == 0 || $artinfo["acomm"] == 1) 
 				{
                     if($neconfig["readmore"] == 1) 
                         $morelink .= "$read_link<strong>"._READMORE."</strong></a> | ";
@@ -212,7 +205,7 @@ switch ($op)
                 
 				if ($introcount > 255) 
 				{
-                    $artinfo["hometext"] = strip_tags($artinfo["hometext"], "<br />");
+                    $artinfo["hometext"] = strip_tags((string) $artinfo["hometext"], "<br />");
                     $artinfo["hometext"] = substr($artinfo["hometext"], 0, 255);
                 }
             }
@@ -220,16 +213,15 @@ switch ($op)
             if ($fullcount > 0) 
 			$morelink .= "$totalcount "._BYTESMORE." | "; 
             
-			if ($articlecomm == 1 AND $artinfo["acomm"] == 0) 
+			if ($articlecomm == 1 && $artinfo["acomm"] == 0) 
 			{
-                if ($artinfo["comments"] == 0) 
+                if ($artinfo["comments"] == 0) {
                     $morelink .= "$story_link"._COMMENTSQ."</a>";
-				else
-				if ($artinfo["comments"] == 1) 
+                } elseif ($artinfo["comments"] == 1) {
                     $morelink .= "$story_link".$artinfo["comments"]." "._COMMENT."</a>";
-				else
-				if ($artinfo["comments"] > 1) 
+                } elseif ($artinfo["comments"] > 1) {
                     $morelink .= "$story_link".$artinfo["comments"]." "._COMMENTS."</a>";
+                }
             }
             
 			$morelink .= "$the_icons";
@@ -242,17 +234,17 @@ switch ($op)
                 $morelink .= " | <a href='modules.php?name=$module_name&amp;file=categories&amp;op=newindex&amp;catid=".$artinfo["catid"]."'>".$catinfo["title"]."</a>";
             }
             
-			if ($artinfo["score"] != 0) 
-            $rated = substr($artinfo["score"] / $artinfo["ratings"], 0, 4);
-			else 
-			$rated = 0; 
+			$rated = $artinfo["score"] != 0 ? substr($artinfo["score"] / $artinfo["ratings"], 0, 4) : 0; 
             
 			$morelink .= " | "._SCORE." $rated";
             $morelink .= " )";
             $morelink = str_replace(" |  | ", " | ", $morelink);
             $informant = $artinfo["informant"];
 
-            if($neconfig["columns"] == 1) // DUAL
+            if(!isset($modified))
+		    $modified = $datetime;
+
+			if($neconfig["columns"] == 1) // DUAL
 			{ 
                 if ($a == 0) 
 				echo "<tr>"; 
@@ -303,7 +295,7 @@ switch ($op)
 		else 
             $articlepages = $articlepagesint;
 
-        if ($articlepages!=1 && $articlepages!=0) 
+        if ($articlepages != 1 && $articlepages != 0) 
 		{
             echo "<br />\n";
             
@@ -337,7 +329,7 @@ switch ($op)
             CloseTable();
         }
         echo "<!-- CLOSE PAGING -->\n";
-        @include_once("footer.php");
+        include_once(NUKE_BASE_DIR . "/footer.php");
     break;
 }
 ?>

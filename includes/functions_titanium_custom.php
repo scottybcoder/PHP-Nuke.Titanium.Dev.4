@@ -1,4 +1,21 @@
 <?php
+/*======================================================================= 
+  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+ =======================================================================*/
+
+/************************************************************************
+PHP-Nuke Titanium : Titanium Functions
+=========================================================================
+Copyright (c) 2022 The PHP-Nuke Titanium Group
+
+Filename      : functions_titanium_custom.php
+Author        : Ernest Allen Buffington 
+Version       : v4.0.3
+Date          : 12.15.2022 (mm.dd.yyyy)
+
+Notes         : Miscellaneous functions
+Last Modified : 12.15.2022 3:59 pm Ernest Allen Buffington
+************************************************************************/
 
 # all facebook div tags should have the ampersand encoded from & to &amp;
 # do not encode script tags from & to &amp; - leave theme alone,
@@ -33,8 +50,27 @@ function facebook_comments() {
 function title_and_meta_tags() {
     /** @var type $facebook_admin_id_number */
     global $facebook_admin_id_number, $ThemeSel, $sitename, $appID, $name, $sid, $file, $db, $prefix;
-
-    /** @var type $ThemeSel get current theme */
+    $top = '';
+	$art = '';
+	$hometext = '';
+	$facebook_admin = '';
+	$facebookappid = '';
+	$facebook_ia_markup_url = '';
+	$facebook_ia_rules_url = '';
+	$facebook_ogdescription = '';
+	$facebook_og_title = '';
+	$structured_data = '';
+	$facebook_ia_markup_url_dev = ''; 
+    $facebook_ia_rules_url_dev  = '';
+	$facebook_ogimage_normal  = '';
+	$facebookimage_alt  = '';
+	$facebook_ogurl = '';
+	$facebook_ogimage_width = '';
+	$facebook_ogimage_height = '';
+	$facebookimagetype = '';
+	$facebook_ogimage = '';
+    $facebook_page_type = '';
+	/** @var type $ThemeSel get current theme */
     $ThemeSel = get_theme();
     $item_delim = "&raquo;";
     $module_name = get_query_var('name', 'get', 'string', '');
@@ -404,17 +440,17 @@ function get_titanium_timeago($ptime) {
         if ($d >= 1):
             $r = round($d);
             # default calendar icon       
-            $icon_string = '<font color="orange"><div align="center"><strong><font color="lightgreen">' . $r . '</font></strong><br />' . ' ' . $str . ($r > 1 ? 's' : '') . ' </font><br /><font 
-	     color="gold"><i class="bi bi-calendar3"></i></font> </div>';
+            $icon_string = '<span style="color:orange"><div align="center"><strong><span style="color:lightgreen">' . $r . '</span></strong><br />' . ' ' . $str . ($r > 1 ? 's' : '') . ' </span><br /><span 
+	     style="color:gold"><i class="bi bi-calendar3"></i></span> </div>';
             # change the icon into a clock if less than or equal to 24 hours
             if ($estimate_time <= 86400):
-                $icon_string = '<font color="orange"><div align="center"><strong><font color="lightgreen">' . $r . '</font></strong><br />' . ' ' . $str . ($r > 1 ? 's' : '') . ' </font><br /><font 
-	     color="gold"><i class="bi bi-alarm"></i></font> </div>';
+                $icon_string = '<span style="color:orange"><div align="center"><strong><span style="color:lightgreen">' . $r . '</span></strong><br />' . ' ' . $str . ($r > 1 ? 's' : '') . ' </span><br /><span 
+	     style="color:gold"><i class="bi bi-alarm"></i></span> </div>';
             endif;
             # change the icon into a stopwatch if less than 60 seconds
             if ($estimate_time <= 60):
-                $icon_string = '<font color="orange"><div align="center"><strong><font color="lightgreen">' . $r . '</font></strong><br />' . ' ' . $str . ($r > 1 ? 's' : '') . ' </font><br /><font 
-	     color="gold"><i class="bi bi-smartwatch"></i></font> </div>';
+                $icon_string = '<span style="color:orange"><div align="center"><strong><span style="color:lightgreen">' . $r . '</span></strong><br />' . ' ' . $str . ($r > 1 ? 's' : '') . ' </span><br /><span 
+	     style="color:gold"><i class="bi bi-smartwatch"></i></span> </div>';
             endif;
             return $icon_string;
         endif;
@@ -422,3 +458,245 @@ function get_titanium_timeago($ptime) {
 }
 
 
+/**
+ * Send mail, similar to PHP's mail
+ *
+ * @since PHP-Nuke Titanium 4.0.3
+ *
+ * A true return value does not automatically mean that the user received the
+ * email successfully. It just only means that the method used was able to
+ * process the request without any errors.
+ *
+ * @global PHPMailer $mail
+ *
+ * @param string|array $to          Array or comma-separated list of email addresses to send message.
+ * @param string       $subject     Email subject
+ * @param string       $message     Message contents
+ * @param string|array $headers     Optional. Additional headers.
+ * @param string|array $attachments Optional. Files to attach.
+ * @return bool Whether the email contents were sent successfully.
+ */
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+function phpmailer($to, $subject, $message, $headers = '', $attachments = array())
+{
+	global $mail, $board_config, $nukeconfig;
+
+	if ( ! ( $mail instanceof PHPMailer ) ) { $mail = new PHPMailer(true); }
+
+	if (isset($to)) { $to = $to; }
+ 
+	if (!is_array( $to ) ) { $to = explode( ',', $to );	}
+
+	// Headers
+	$cc = $bcc = $reply_to = array();
+
+	// $mail->SMTPDebug = 2;
+
+	if ( $board_config['smtp_delivery'] == '1' ):
+
+		$mail->Host = $board_config['smtp_host'];
+		$mail->Port = $board_config['smtp_port'];
+
+		$mail->isSMTP();
+
+		$mail->SMTPSecure = $board_config['smtp_encryption'];
+
+		// if ( $board_config['smtp_encryption'] != 'none' ):
+		//     $mail->SMTPSecure = $board_config['smtp_encryption'];
+		// endif;
+
+		if ( 'none' === $board_config['smtp_encryption'] ):
+
+			$mail->SMTPSecure  = '';
+			$mail->SMTPAutoTLS = false;
+
+		endif;
+
+		if ( $board_config['smtp_auth'] == 1 ):
+
+			$mail->SMTPAuth = true;
+			$mail->Username = $board_config['smtp_username'];
+
+			if( defined('SMTP_Password') && SMTP_Password ):
+				$mail->Password = SMTP_Password;
+			else:
+				$mail->Password = $board_config['smtp_password'];
+			endif;
+
+		else:
+			$mail->SMTPAuth = false;
+		endif;
+
+	else:
+		$mail->IsMail();
+	endif;
+
+	/* sort the headers */
+	if ( empty( $headers ) ) 
+	{
+		$headers = array();
+	}
+	else
+	{
+		if ( !is_array( $headers ) ) {
+			// Explode the headers out, so this function can take both
+			// string headers and an array of headers.
+			$tempheaders = explode( "\n", str_replace( "\r\n", "\n", $headers ) );
+		} 
+		else 
+		{
+			$tempheaders = $headers;
+		}
+
+		// If it's actually got contents
+		if ( !empty( $tempheaders ) ) {
+			// Iterate through the raw headers
+			foreach ( (array) $tempheaders as $header ) {
+				if ( strpos($header, ':') === false ) {
+					if ( false !== stripos( $header, 'boundary=' ) ) {
+						$parts = preg_split('/boundary=/i', trim( $header ) );
+						$boundary = trim( str_replace( array( "'", '"' ), '', $parts[1] ) );
+					}
+					continue;
+				}
+				// Explode them out
+				list( $name, $content ) = explode( ':', trim( $header ), 2 );
+ 
+				// Cleanup crew
+				$name    = trim( $name    );
+				$content = trim( $content );
+ 
+				switch ( strtolower( $name ) ) 
+				{
+					case 'from':
+						$bracket_pos = strpos( $content, '<' );
+						if ( $bracket_pos !== false ) {
+							// Text before the bracketed email is the "From" name.
+							if ( $bracket_pos > 0 ) {
+								$from_name = substr( $content, 0, $bracket_pos - 1 );
+								$from_name = str_replace( '"', '', $from_name );
+								$from_name = trim( $from_name );
+							}
+ 
+							$from_email = substr( $content, $bracket_pos + 1 );
+							$from_email = str_replace( '>', '', $from_email );
+							$from_email = trim( $from_email );
+ 
+						// Avoid setting an empty $from_email.
+						} elseif ( '' !== trim( $content ) ) {
+							$from_email = trim( $content );
+						}
+						break;
+					case 'content-type':
+						if ( strpos( $content, ';' ) !== false ) {
+							list( $type, $charset_content ) = explode( ';', $content );
+							$content_type = trim( $type );
+							if ( false !== stripos( $charset_content, 'charset=' ) ) {
+								$charset = trim( str_replace( array( 'charset=', '"' ), '', $charset_content ) );
+							} elseif ( false !== stripos( $charset_content, 'boundary=' ) ) {
+								$boundary = trim( str_replace( array( 'BOUNDARY=', 'boundary=', '"' ), '', $charset_content ) );
+								$charset = '';
+							}
+ 
+						// Avoid setting an empty $content_type.
+						} elseif ( '' !== trim( $content ) ) {
+							$content_type = trim( $content );
+						}
+						break;
+					case 'cc':
+						$cc = array_merge( (array) $cc, explode( ',', $content ) );
+						break;
+					case 'bcc':
+						$bcc = array_merge( (array) $bcc, explode( ',', $content ) );
+						break;
+					case 'reply-to':
+						$reply_to = array_merge( (array) $reply_to, explode( ',', $content ) );
+						break;
+					default:
+						// Add it to our grand headers array
+						$headers[trim( $name )] = trim( $content );
+						break;
+				}
+			}
+		}
+	}
+
+	$address_headers = compact( 'to', 'cc', 'bcc', 'reply_to' );
+	foreach ( $address_headers as $address_header => $addresses ) 
+	{
+		if ( empty( $addresses ) ) {
+			continue;
+		}
+ 
+		foreach ( (array) $addresses as $address ) {
+			try {
+				// Break $recipient into name and address parts if in the format "Foo <bar@baz.com>"
+				$recipient_name = '';
+ 
+				if ( preg_match( '/(.*)<(.+)>/', $address, $matches ) ) {
+					if ( count( $matches ) == 3 ) {
+						$recipient_name = $matches[1];
+						$address        = $matches[2];
+					}
+				}
+ 
+				switch ( $address_header ) {
+					case 'to':
+					    //Add a recipient
+						$mail->addAddress( $address, $recipient_name );
+						break;
+					case 'cc':
+						$mail->addCC( $address, $recipient_name );
+						break;
+					case 'bcc':
+						$mail->addBCC( $address, $recipient_name );
+						break;
+					case 'reply_to':
+						$mail->addReplyTo( $address, $recipient_name );
+						break;
+				}
+			} catch ( phpmailerException $e ) {
+				continue;
+			}
+		}
+	}
+
+	if ( !isset( $from_name ) )
+		$from_name = $board_config['sitename'];
+
+	if ( !isset( $from_email ) ) 
+		$from_email = $nukeconfig['adminmail'];
+
+	$mail->ContentType = 'text/plain'; 
+	$mail->CharSet = 'utf-8';
+	$mail->From = $from_email;
+	$mail->FromName = $from_name;
+
+	// Set whether it's plaintext, depending on $content_type
+	//if ( 'text/html' == $content_type ) # we want html on all the time!
+	$content_type = 'text/html';
+
+	$mail->Subject = $subject;
+	$mail->Body = $message;
+	$mail->isHTML(true);
+
+	if (!$mail->send()) {
+		$mail->ErrorInfo;
+		$mail->clearAllRecipients();
+		$mail->clearReplyTos();
+		OpenTable();
+		echo 'Message could not be sent.<br />';
+		CloseTable();
+		include_once(NUKE_BASE_DIR.'footer.php');
+		exit;
+		// return FALSE;
+	} else { 
+		$mail->clearAllRecipients();
+		$mail->clearReplyTos();      
+		return TRUE;
+	}
+}

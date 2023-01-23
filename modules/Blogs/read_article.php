@@ -32,7 +32,7 @@ if (!defined('MODULE_FILE')) { die('You can\'t access this file directly...'); }
 
 global $cookie, $userinfo;
 
-@include_once(NUKE_INCLUDE_DIR.'counter.php');
+include_once(NUKE_INCLUDE_DIR.'counter.php');
 
 $module_name = basename(dirname(__FILE__));
 
@@ -84,8 +84,8 @@ $hometext = decode_bbcode(set_smilies(stripslashes($row["hometext"])), 1, true);
 
 $bodytext = decode_bbcode(set_smilies(stripslashes($row["bodytext"])), 1, true);
 
-$bodytext = evo_img_tag_to_resize($bodytext);
-$hometext = evo_img_tag_to_resize($hometext);
+$bodytext = img_tag_to_resize($bodytext);
+$hometext = img_tag_to_resize($hometext);
 
 $topic = $row["topic"];
 
@@ -117,7 +117,7 @@ $Theme_Sel = get_theme();
 echo "<html>\n";
 echo "<head>\n";
 
-@require_once("themes/".$Theme_Sel."/theme.php");
+require_once("themes/".$Theme_Sel."/theme.php");
 
 echo "<link href=\"themes/".$Theme_Sel."/style/style.css\" rel=\"stylesheet\" type=\"text/css\">";
 echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />";
