@@ -39,8 +39,10 @@ if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
 function get_user_field($field_name, $user, $is_name = false) 
 {
     global $db, $identify;
-    static $actual_user;
-    if (!$user) return NULL;
+    static $actual_user = [];
+    $data = [];
+	
+	if (!$user) return null;
 
     if ($is_name || !is_numeric($user))  
 	{
@@ -57,6 +59,9 @@ function get_user_field($field_name, $user, $is_name = false)
 	{
         $sql = "SELECT * FROM ".USERS_TABLE." WHERE $where";
         $actual_user[$user] = $db->sql_ufetchrow($sql);
+		
+		if(!isset($actual_user[$user]['user_id']))
+		$actual_user[$user]['user_id'] = 1;
         // We also put the groups data in the array.
         $result = $db->sql_query('SELECT g.group_id, 
 		                               g.group_name, 
@@ -87,6 +92,7 @@ function get_user_field($field_name, $user, $is_name = false)
         }
         return $data;
     }
+	if(isset($actual_user[$user][$field_name]))
     return $actual_user[$user][$field_name];
 }
 
@@ -102,27 +108,33 @@ function get_user_field($field_name, $user, $is_name = false)
 function get_admin_field($field_name, $admin) 
 {
     global $db, $debugger;
-    static $fields = array();
-    if (!$admin) {
-        return array();
+	//static $fields = array();
+	static $fields = [];
+
+    
+	if (!$admin) {
+      //return array();
+      return [];
     }
 
     if(!isset($fields[$admin]) || !is_array($fields[$admin])) {
-        $fields[$admin] = $db->sql_ufetchrow("SELECT * FROM "._AUTHOR_TABLE." WHERE `aid` = '" .  str_replace("\'", "''", $admin) . "'");
+        //$fields[$admin] = $db->sql_ufetchrow("SELECT * FROM "._AUTHOR_TABLE." WHERE `aid` = '" .  str_replace("\'", "''", $admin) . "'");
+        $fields[$admin] = $db->sql_ufetchrow("SELECT * FROM "._AUTHOR_TABLE." WHERE `aid` = '" .  str_replace("\'", "''", (string) $admin) . "'");
     }
 
     if($field_name == '*') {
         return $fields[$admin];
     }
     if(is_array($field_name)) {
-        $data = array();
+        //$data = array();
+        $data = [];
+
         foreach($field_name as $fld) {
             $data[$fld] = $fields[$admin][$fld];
         }
         return $data;
     }
-
-    return $fields[$admin][$field_name];
+    return $fields[$admin][$field_name] ?? '';
 }
 
 /**
@@ -1070,20 +1082,26 @@ function add_group_attributes($user_id, $group_id)
         $row_color = $db->sql_fetchrow($result_color);
         $db->sql_freeresult($result_color);
     }
-    $sql_rank = "SELECT `group_rank` FROM `" . $prefix . "_bbgroups` WHERE `group_id` = '$group_id'";
+    
+	$sql_rank = "SELECT `group_rank` FROM `" . $prefix . "_bbgroups` WHERE `group_id` = '$group_id'";
     $result_rank = $db->sql_query($sql_rank);
     $row_rank = $db->sql_fetchrow($result_rank);
     $db->sql_freeresult($result_rank);
     if(isset($row_rank['group_rank']) && !isset($row_color['group_color'])) {
         $sql = "`user_rank` = '".$row_rank['group_rank']."'";
-    }elseif(isset($row_color['group_color']) && !isset($row_rank['group_rank'])) {
+    }
+	elseif(isset($row_color['group_color']) && !isset($row_rank['group_rank'])) 
+	{
         $sql = "`user_color_gc` = '".$row_color['group_color']."',
               `user_color_gi`  = '--".$row_color['group_id']."--'";
-    } elseif (isset($row_color['group_color']) && isset($row_rank['group_rank'])) {
+    } 
+	elseif (isset($row_color['group_color']) && isset($row_rank['group_rank'])) {
         $sql = "`user_rank` = '".$row_rank['group_rank']."',
             `user_color_gc` = '".$row_color['group_color']."',
             `user_color_gi`  = '--".$row_color['group_id']."--'";
-    } else {
+    } 
+	else 
+	{
         $sql = "";
     }
 

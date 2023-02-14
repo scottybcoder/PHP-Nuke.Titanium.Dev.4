@@ -23,7 +23,7 @@ function modadmin_get_modules ($mid = '')
 
     $mid = (!empty($mid)) ? 'WHERE mid='.$mid : '';
 
-    if(!$result = $db->sql_query("SELECT `mid`, `title`, `custom_title`, `active`, `view`, `inmenu`, `blocks`, `groups` FROM `".$prefix."_modules` $mid ORDER BY `mid` ASC")) 
+    if(!$result = $db->sql_query("SELECT `mid`, `title`, `custom_title`, `active`, `view`, `inmenu`, `blocks`, `groups` FROM `".$prefix."_modules` $mid ORDER BY `title` ASC")) 
     DisplayError($admlang['modblock']['no_values']);
 
     if (!$out = $db->sql_fetchrowset($result)) 
@@ -651,7 +651,7 @@ function modadmin_get_module_cats ()
 
     if (isset($cats) && is_array($cats)) $modadmin_module_cats = $cats;
 
-    if(!($cats = $cache->load('module_cats', 'titanium_config'))) 
+    if(!($cats = $cache->load('module_cats', 'config'))) 
 	{
         if(!$result = $db->sql_query("SELECT `cid`, `name`, `image`, `pos`, `link_type`, `link` FROM `".$prefix."_modules_cat` WHERE `name`<>'Home' ORDER BY `pos` ASC")) 
 		{
@@ -664,7 +664,7 @@ function modadmin_get_module_cats ()
         }
         
 		$db->sql_freeresult($result);
-        $cache->save('module_cats', 'titanium_config', $cats);
+        $cache->save('module_cats', 'config', $cats);
     }
     
 	$modadmin_module_cats = $cats;

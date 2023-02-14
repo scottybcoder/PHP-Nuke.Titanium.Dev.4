@@ -164,7 +164,8 @@ function downloadTheme($theme)
 		$random = "";
 		$chars  = "123456789abcdefghijklmnopqrstuvwxyz";
 		
-		srand((double)microtime()*1000000);
+      //srand((double)microtime()*1000000); <- this horse shit is dead and gone
+        mt_srand((double)microtime()*1_000_000); # <- this is the new horse shit
 	
 		for ($i = 0; $i<$length; $i++)
 		{
@@ -791,7 +792,7 @@ function install_save($post){
         }
     }
 
-    $sql = "INSERT INTO " . $prefix . "_themes VALUES('" . $post['theme_name'] . "', '" . $post['groups'] . "', '" . $post['permissions'] . "', '" . $post['custom_name'] . "', '" . $post['active'] . "', '" . $theme_info . "')";
+    $sql = "REPLACE INTO " . $prefix . "_themes VALUES('" . $post['theme_name'] . "', '" . $post['groups'] . "', '" . $post['permissions'] . "', '" . $post['custom_name'] . "', '" . $post['active'] . "', '" . $theme_info . "')";
 	
     if ($db->sql_query($sql))
 	{

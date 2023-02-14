@@ -2,12 +2,12 @@
 
 /**
 *****************************************************************************************
-** PHP-AN602  (Titanium Edition) v1.0.0 - Project Start Date 11/04/2022 Friday 4:09 am **
+** PHP-Nuke Titanium v4.0.4 - Project Start Date 11/04/2022 Friday 4:09 am             **
 *****************************************************************************************
-** https://an602.86it.us/
-** https://github.com/php-an602/php-an602
-** https://an602.86it.us/index.php (DEMO)
-** Apache License, Version 2.0, MIT license 
+** https://www.php-nuke-titanium.86it.us
+** https://github.com/ernestbuffington/PHP-Nuke.Titanium.Dev.4
+** https://www.php-nuke-titanium.86it.us/index.php (DEMO)
+** Apache License, Version 2.0. MIT license 
 ** Copyright (C) 2022
 ** Formerly Known As PHP-Nuke by Francisco Burzi <fburzi@gmail.com>
 ** Created By Ernest Allen Buffington (aka TheGhost or Ghost) <ernest.buffington@gmail.com>
@@ -35,7 +35,7 @@ define("_reset", "Reset");
 // Step 1
 define("_step1", "<strong>Step 1: Installation Requirements</strong>");
 define("_phpvercheck", "Checking PHP Version");
-define("_phpverfail", "You need at least PHP version 8.1 to Install PHP-AN602.");
+define("_phpverfail", "You need at least PHP version 8.1 to Install PHP-Nuke Titanium.");
 define("_zlibcheck", "Checking Zlib");
 define("_zlibfail", "Installing Zlib allows you to Save Bandwidth.");
 define("_mysqlcheck", "Checking MySQL");
@@ -80,16 +80,16 @@ define("_udp_check", "Checking to make sure UDP:// works on your Server");
 
 define("_udpfail", "Your Server is not Configured to work with Torrents that have a UDP Announce URL.<br />You may still be able to handle External Torrents so as long as their Announce URL is not based on the UDP Protocol.");
 
-define("_step1fail", "You cannot proceed with the Installation of PHP-AN602 as your Server doesn't meet the Minimum System Requirements.");
+define("_step1fail", "You cannot proceed with the Installation of PHP-Nuke Titanium as your Server doesn't meet the Minimum System Requirements.");
 
-define("_step1warn", "You can proceed with the Installation of PHP-AN602, but you will not experience the Best Performance.");
+define("_step1warn", "You can proceed with the Installation of PHP-Nuke Titanium, but you will not experience the Best Performance.");
 
 // Step 2
 define("_step2", "<strong>Step 2: License Agreement</strong>");
 
-define("_gpllicense", "In order to Install PHP-AN602 you must Agree to ALL the Terms of the Apache License, under which PHP-AN602 is Released.");
+define("_gpllicense", "In order to Install PHP-Nuke Titanium you must Agree to ALL the Terms of the Apache License, under which PHP-Nuke Titanium is Released.");
 
-define("_lgpllicense", "You must also Agree to ALL Terms of the GNU/LGPL License because PHP-AN602 uses Open Source Libraries Released under that License.");
+define("_lgpllicense", "You must also Agree to ALL Terms of the GNU/LGPL License because PHP-Nuke Titanium uses Open Source Libraries Released under that License.");
 
 define("_iagree", "I Agree");
 define("_idontagree", "I Do Not Agree");
@@ -98,7 +98,7 @@ define("_step2fail", "You cannot proceed until you Accept both Licenses.");
 // Step 3
 define("_step3", "<strong>Step 3: Basic Configuration</strong>");
 
-define("_step3explain", "You can now Configure PHP-AN602's Basic Settings.  These Settings include Database Access (i.e. username, password...) and some Advanced Settings like Cookie Encryption and the Mass Uploads Directory.  Further details below.");
+define("_step3explain", "You can now Configure PHP-Nuke Titanium's Basic Settings.  These Settings include Database Access (i.e. username, password...) and some Advanced Settings like Cookie Encryption and the Mass Uploads Directory.  Further details below.");
 
 define("_dbconfig", "Database Configuration");
 define("_dbtype", "Database Type");
@@ -125,9 +125,9 @@ define("_privkey", "Private Key");
 
 define("_permissioncmd", "In order to make the Directory Writeable, Run the following Command from your Server Shell, making sure that your Logged in as <em>**User**</em>: <u>**cmd**</u>");
 
-define("_cannotwriteconfig", "Cannot Save the Configuration File.  Please Create a File named <strong>configdata.php</strong> in the <strong>/include</strong> directory of PHP-AN602 and Paste the following code in it (ALL of it -- if you Copy & Pasted correctly, the file starts with <strong><?php</strong> and ends with <strong>?></strong>)");
+define("_cannotwriteconfig", "Cannot Save the Configuration File.  Please Create a File named <strong>configdata.php</strong> in the <strong>/include</strong> directory of PHP-Nuke Titanium and Paste the following code in it (ALL of it -- if you Copy & Pasted correctly, the file starts with <strong><?php</strong> and ends with <strong>?></strong>)");
 
-define("_step3complete", "Configuration Completed.  You can now Install the PHP-AN602 Database.");
+define("_step3complete", "Configuration Completed.  You can now Install the PHP-Nuke Titanium Database.");
 
 // Step  4
 define("_step4", "<strong>Step 4: Installing Database</strong>");
@@ -139,51 +139,260 @@ define("_nuke_sql_error3", "Error Message: ");
 define("_tblcreating", "Creating Table <strong>**table**</strong>...");
 define("_installcategories", "Creating Default Categories...");
 define("_installsmiles", "Installing Default Smiley's...");
-
 define("_step4failed", "A Fatal Error Occurred during Setup.  Please Fix the above Error and try running the Setup again, or Refreshing your Browser.");
+define("_step4complete", "Database Installation was Completed Successfully.  You can now Configure your website according to your Preferences.");
 
-define("_step4complete", "Database Installation was Completed Successfully.  You can now Configure your Tracker according to your Preferences.");
+define("_sql_admin_fc", "Creating Default Admin Table Settings...");
 
-define("_sql_admin_forum", "Installing Default Forum Configuration");
-define("_sql_arcade_categories", "Installing Default Arcade Categories");
-define("_sql_site_settings", "Installing Default Site Settings");
-define("_sql_arcade_settings", "Installing Default Arcade Settings");
-define("_sql_arcade_games", "Installing Default Arcade Games");
-define("_sql_attachments_config", "Installing Default Attachment Configuration");
-define("_sql_avatar_config", "Installing Default Avatar Configuration");
-define("_sql_avp", "Installing Default Cleanup Clock");
-define("_sql_bbcode", "Installing a Test BBcode");
-define("_sql_bonus", "Installing Default Bonus Notice");
-define("_sql_bonus_points", "Installing Default Bonus Points");
-define("_sql_cache_con", "Installing Default Cache Configuration");
-define("_sql_extension_groups", "Installing Default File Extension Groups");
-define("_sql_extensions", "Installing Default File Extensions");
-define("_sql_forum_config", "Installing Default Forum Configuration");
-define("_sql_icons", "Installing Default Icons");
-define("_sql_img_bucket", "Installing Default Image Bucket Configuration");
-define("_sql_level_privlages", "Installing Default Level Privileges");
-define("_sql_level_settings", "Installing Default Level Settings");
-define("_sql_levels", "Installing Default Levels");
-define("_sql_paypal", "Installing Default PayPal Settings");
-define("_sql_ranks", "Installing Default Ranks");
-define("_sql_ratiowarn_config", "Installing Ratio Warning Configuration");
-define("_sql_search_cloud", "Installing Default Search Cloud Settings");
-define("_sql_shout_config", "Installing Default Shoutbox Settings");
-define("_sql_time_offset", "Installing Default Time Zones");
-define("_sql_userautodel", "Installing Default User Auto Delete Configuration");
-define("_sql_acl_options", "Installing Default Forum ACL");
-define("_sql_acl_roles", "Installing Default Forum ACL Roles");
-define("_sql_acl_roles_data", "Installing Default Forum ACL Roles Data");
-define("_sql_modules", "Installing Default Forum ACL Modules");
-define("_sql_report_reasons", "Installing Default Report Reasons");
-define("_sql_countries", "Installing Default Countries");
-define("_sql_hit_run", "Installing Default Hit & Run Configuration");
-define("_sql_acl_groups", "Installing Default Groups to ACL Table");
+define("_sql_author", "Creating Default Author Table Settings...");
+
+define("_sql_banner", "Creating Default Banner Table Settings...");
+define("_sql_banner_clients", "Creating Default Banner Client Table Settings...");
+define("_sql_banner_plans", "Creating Default Banner Plans Table Settings...");
+define("_sql_banner_positions", "Creating Default Banner Postions Table Settings...");
+define("_sql_banner_terms", "Creating Default Banner Terms Table Settings...");
+
+define("_sql_advanced_username_colors", "Creating Default User Name Color Table Settings...");
+
+define("_sql_bbarcade_settings", "Creating Default Arcade Table Settings...");
+define("_sql_bbarcade_categories", "Creating Default Arcade Categories Table Settings...");
+define("_sql_bbarcade_comments", "Creating Default Arcade Comments Table Settings...");
+define("_sql_bbarcade_favorites", "Creating Default Arcade Favorites Table Settings...");
+define("_sql_bbarcade_auth_access", "Creating Default Auth Arcade Access Table Settings...");
+define("_sql_bbarcade_games", "Creating Default Arcade Games Table Settings...");
+define("_sql_bbarcade_games_hash", "Creating Default Arcade Games Hash Table Settings...");
+define("_sql_bbarcade_hack_games", "Creating Default Arcade Hack Games Table Settings...");
+define("_sql_bbarcade_scores", "Creating Default Arcade Scores Table Settings...");
+
+
+define("_sql_bbattachments", "Creating Default Attachments Table Settings...");
+define("_sql_bbattachments_config", "Creating Default Attachments Config Table Settings...");
+define("_sql_bbattachments_descriptions", "Creating Default Attachments Descriptions Table Settings...");
+define("_sql_bbattachments_quota", "Creating Default Attachments Quota Table Settings...");
+
+define("_sql_bbauth_access", "Creating Default Auth Access Table Settings...");
+define("_sql_bb_banlist", "Creating Default Ban List Table Settings...");
+define("_sql_bb_categories", "Creating Default Forum Categories Table Settings...");
+define("_sql_bb_config", "Creating Default Forum Config Table Settings...");
+define("_sql_bb_disallow", "Creating Default Forum Disallow Table Settings...");
+define("_sql_bb_extensions", "Creating Default Attachments Extensions Table Settings...");
+define("_sql_bb_extensions_groups", "Creating Default Attachments Extensions Groups Table Settings...");
+define("_sql_bb_flags", "Creating Default Forum Flag Table Settings...");
+define("_sql_bb_forbidden_attachemnets_extensions", "Creating Default Attachemnts Forbidden Extensions Table Settings...");
+define("_sql_bb_forums", "Creating Default Forum Table Settings...");
+define("_sql_bb_forums_prune", "Creating Default Forum Prune Table Settings...");
+define("_sql_bb_groups", "Creating Default Forum Groups Table Settings...");
+define("_sql_bb_inline_ads", "Creating Default Forum InLine Ads Table Settings...");
+define("_sql_bb_logs", "Creating Default Forum Logs Table Settings...");
+define("_sql_bb_logs_config", "Creating Default Forum Logs Config Table Settings...");
+define("_sql_bb_forum_posts", "Creating Default Forum Posts Table Settings...");
+define("_sql_bb_forum_posts_text", "Creating Default Forum Posts Text Table Settings...");
+define("_sql_bb_forum_posts_reports", "Creating Default Forum Posts Reports Table Settings...");
+define("_sql_bb_private_messages", "Creating Default Forum Private Messages Table Settings...");
+define("_sql_bb_private_messages_text", "Creating Default Forum Private Messages Text Table Settings...");
+define("_sql_bb_private_messages_archive", "Creating Default Forum Private Messages Archive Table Settings...");
+define("_sql_bb_quick_search", "Creating Default Forum Quick Search Table Settings...");
+define("_sql_bb_quota_limits", "Creating Default Forum Quota Limits Table Settings...");
+define("_sql_bb_ranks", "Creating Default Forum Ranks Table Settings...");
+define("_sql_bb_reputation", "Creating Default Forum Reputations Table Settings...");
+define("_sql_bb_reputation_config", "Creating Default Forum Reputations Config Table Settings...");
+define("_sql_bb_search_rebuild", "Creating Default Forum Search Rebuild Table Settings...");
+define("_sql_bb_search_results", "Creating Default Forum Search Results Table Settings...");
+define("_sql_bb_search_word_list", "Creating Default Forum Search Word List Table Settings...");
+define("_sql_bb_search_word_match", "Creating Default Forum Search Word Match Table Settings...");
+define("_sql_bb_sessions", "Creating Default Forum Sessions Table Settings...");
+define("_sql_bb_sessions_keys", "Creating Default Forum Sessions Keys Table Settings...");
+define("_sql_bb_smilies", "Creating Default Forum Smilies Table Settings...");
+define("_sql_bb_smilies_index", "Creating Default Forum Smilies Index Table Settings...");
+define("_sql_bb_smilies_info", "Creating Default Forum Smilies Info Table Settings...");
+define("_sql_bb_stats", "Creating Default Forum Stats Table Settings...");
+define("_sql_bb_stats_modules", "Creating Default Forum Stats Modules Table Settings...");
+define("_sql_bb_stats_modules_admin_panel", "Creating Default Forum Stats Modules Admin Panel Table Settings...");
+define("_sql_bb_stats_modules_cache", "Creating Default Forum Stats Modules Cache Table Settings...");
+define("_sql_bb_stats_group_auth", "Creating Default Forum Stats Group Auth Table Settings...");
+define("_sql_bb_stats_modules_info", "Creating Default Forum Stats Modules Info Table Settings...");
+define("_sql_bb_thanks", "Creating Default Forum Thanks Table Settings...");
+define("_sql_bb_themes", "Creating Default Themes Table Settings...");
+define("_sql_bb_themes_names", "Creating Default Themes Names Table Settings...");
+define("_sql_bb_forum_topics", "Creating Default Forum Topics Table Settings...");
+define("_sql_bb_forum_topics_watch", "Creating Default Forum Topics Watch Table Settings...");
+define("_sql_bb_forum_topics_email", "Creating Default Forum Topics Email Table Settings...");
+define("_sql_bb_forum_topic_moved", "Creating Default Forum Topic Moved Table Settings...");
+define("_sql_bb_forum_topic_viewed", "Creating Default Forum Topics Viewed Table Settings...");
+define("_sql_bb_user_groups", "Creating Default Forum User Groups Table Settings...");
+define("_sql_bb_vote_description", "Creating Default Forum Vote Description Table Settings...");
+define("_sql_bb_vote_results", "Creating Default Forum Vote Results Table Settings...");
+define("_sql_bb_voters", "Creating Default Forum Voters Table Settings...");
+define("_sql_bb_filtered_words", "Creating Default Forum Filtered Words Table Settings...");
+define("_sql_bb_xdata_auth", "Creating Default Forum XDATA Auth Table Settings...");
+define("_sql_bb_xdata_data", "Creating Default Forum XDATA Data Table Settings...");
+define("_sql_bb_xdata_fields", "Creating Default Forum XDATA Fields Table Settings...");
+
+define("_sql_blocks", "Creating Default Titanium Blocks Table Settings...");
+
+define("_sql_blogs_config", "Creating Default Titanium Blogs Config Table Settings...");
+define("_sql_blogs", "Creating Default Titanium Blogs Table Settings...");
+define("_sql_auto_blogs", "Creating Default Titanium Auto Blogs Table Settings...");
+define("_sql_blog_categories", "Creating Default Titanium Blogs Categories Table Settings...");
+define("_sql_blog_comments", "Creating Default Titanium Blogs Comments Table Settings...");
+define("_sql_blogs_queue", "Creating Default Titanium Blogs Queue Table Settings...");
+define("_sql_blogs_topics", "Creating Default Titanium Blogs Topics Table Settings...");
+
+define("_sql_titanium_bookmarks", "Creating Default Titanium Bookmarks Table Settings...");
+define("_sql_titanium_bookmarks_categories", "Creating Default Titanium Bookmarks Categories Table Settings...");
+
+define("_sql_titanium_cemetery", "Creating Default Titanium Cemetery Table Settings...");
+define("_sql_titanium_cemetery_categories", "Creating Default Titanium Cemetery Categories Table Settings...");
+
+define("_sql_titanium_your_account", "Creating Default Titanium Your Account Table Settings...");
+define("_sql_titanium_your_account_fields", "Creating Default Titanium Your Account Fields Table Settings...");
+define("_sql_titanium_your_account_value", "Creating Default Titanium Your Account Value Table Settings...");
+define("_sql_titanium_your_account_value_temp", "Creating Default Titanium Your Account Value Temp Table Settings...");
+
+define("_sql_nuke_config", "Creating Default Titanium Nuke Config Table Settings...");
+
+define("_sql_nuke_confirm", "Creating Default Titanium Nuke Confirm Table Settings...");
+
+define("_sql_nuke_counter", "Creating Default Titanium Nuke Counter Table Settings...");
+
+define("_sql_titanium_donaters", "Creating Default Titanium Donaters Table Settings...");
+define("_sql_titanium_donaters_config", "Creating Default Titanium Donaters Config Table Settings...");
+
+define("_sql_evo_ecalendar", "Creating Default Evo eCalendar Table Settings...");
+define("_sql_evo_userblock", "Creating Default Evo User Block Table Settings...");
+define("_sql_evo_userblock_addons", "Creating Default Evo User Block Addons Table Settings...");
+
+define("_sql_titanium_config", "Creating Default Titanium Config Table Settings...");
+define("_sql_titanium_faq", "Creating Default Titanium FAQ Table Settings...");
+define("_sql_titanium_faq_categories", "Creating Default Titanium FAQ Categories Table Settings...");
+
+define("_sql_file_repository_categories", "Creating Default File Respository Categories Table Settings...");
+define("_sql_file_repository_comments", "Creating Default File Respository Comments Table Settings...");
+define("_sql_file_repository_files", "Creating Default File Respository Files Table Settings...");
+define("_sql_file_repository_items", "Creating Default File Respository Items Table Settings...");
+define("_sql_file_repository_screenshots", "Creating Default File Respository Screen Shots Table Settings...");
+define("_sql_file_repository_settings", "Creating Default File Respository Config Table Settings...");
+define("_sql_file_repository_themes", "Creating Default File Respository Themes Table Settings...");
+
+define("_sql_titanium_headlines", "Creating Default Titanium Headlines Table Settings...");
+
+define("_sql_evo_news_letter_categories", "Creating Default Evo News Letter Categories Table Settings...");
+define("_sql_evo_news_letter_config", "Creating Default Evo News Letter Config Table Settings...");
+define("_sql_evo_news_letters", "Creating Default Evo News Letters Table Settings...");
+
+define("_sql_titanium_honey_pot", "Creating Default Titanium Honey Pot Table Settings...");
+define("_sql_titanium_honey_pot_config", "Creating Default Titanium Honey Pot Config Table Settings...");
+
+define("_sql_image_repository_settings", "Creating Default Image Respository Config Table Settings...");
+define("_sql_image_repository_uploads", "Creating Default Image Respository Uploads Table Settings...");
+define("_sql_image_repository_users", "Creating Default Image Respository Users Table Settings...");
+
+define("_sql_titanium_google_site_map", "Creating Default Titanium Google Site Map Table Settings...");
+
+define("_sql_titanium_web_links_categories", "Creating Default Web Links Categories Table Settings...");
+define("_sql_titanium_web_links_editorials", "Creating Default Web Links Editorials Table Settings...");
+define("_sql_titanium_web_links_main", "Creating Default Web Links Table Settings...");
+define("_sql_titanium_web_links_mod_requests", "Creating Default Web Links Modification Requests Table Settings...");
+define("_sql_titanium_web_links_new_link", "Creating Default Web Links New Link Table Settings...");
+define("_sql_titanium_web_links_vote_data", "Creating Default Web Links Vote Data Table Settings...");
+
+define("_sql_titanium_link_us", "Creating Default Titanium Link Us Table Settings...");
+define("_sql_titanium_link_us_config", "Creating Default Titanium Link Us Config Table Settings...");
+
+define("_sql_titanium_main", "Creating Default Titanium Main Table Settings...");
+
+define("_sql_titanium_menu", "Creating Default Titanium Menu Table Settings...");
+define("_sql_titanium_menu_categories", "Creating Default Menu Categories Table Settings...");
+
+define("_sql_titanium_messages", "Creating Default Messages Table Settings...");
+
+define("_sql_titanium_meta_tags", "Creating Default Meta Tags Table Settings...");
+
+define("_sql_titanium_modules", "Creating Default Modules Table Settings...");
+define("_sql_titanium_modules_categories", "Creating Default Modules Categories Table Settings...");
+define("_sql_titanium_modules_links", "Creating Default Modules Links Table Settings...");
+
+define("_sql_nuke_mostonline", "Creating Default Titanium Most Online Table Settings...");
+
+define("_sql_nuke_center_blocks", "Creating Default Titanium Center Blocks Table Settings...");
+define("_sql_nuke_center_blocks_config", "Creating Default Titanium Center Blocks Config Table Settings...");
+
+define("_sql_titanium_supporters_config", "Creating Default Supporters Config Table Settings...");
+define("_sql_titanium_supporters_sites", "Creating Default Supporters Sites Table Settings...");
+
+define("_sql_titanium_nuke_sentienl_admins", "Creating Default Nuke Sentinel Admins Table Settings...");
+define("_sql_titanium_nuke_sentienl_blocked_ips", "Creating Default Nuke Sentinel Blocked IPs Table Settings...");
+define("_sql_titanium_nuke_sentienl_blocked_ranges", "Creating Default Nuke Sentinel Blocked Ranges Table Settings...");
+define("_sql_titanium_nuke_sentienl_blockers", "Creating Default Nuke Sentinel Blockers Table Settings...");
+define("_sql_titanium_nuke_sentienl_cidrs", "Creating Default Nuke Sentinel CIDRS Table Settings...");
+define("_sql_titanium_nuke_sentienl_config", "Creating Default Nuke Sentinel Config Table Settings...");
+define("_sql_titanium_nuke_sentienl_countries", "Creating Default Nuke Sentinel Countries Table Settings...");
+define("_sql_titanium_nuke_sentienl_excluded_ranges", "Creating Default Nuke Sentinel Excluded Ranges Table Settings...");
+define("_sql_titanium_nuke_sentienl_harvesters", "Creating Default Nuke Sentinel Harvesters Table Settings...");
+define("_sql_titanium_nuke_sentienl_ip2_country", "Creating Default Nuke Sentinel ip2 Country Table Settings...");
+define("_sql_titanium_nuke_sentienl_protected_ranges", "Creating Default Nuke Sentinel Protected Ranges Table Settings...");
+define("_sql_titanium_nuke_sentienl_referers", "Creating Default Nuke Sentinel Referers Table Settings...");
+define("_sql_titanium_nuke_sentienl_strings", "Creating Default Nuke Sentinel Strings Table Settings...");
+define("_sql_titanium_nuke_sentienl_tracked_ips", "Creating Default Nuke Sentinel Tracked IPs Table Settings...");
+
+define("_sql_titanium_pages", "Creating Default Titanium Pages Table Settings...");
+define("_sql_titanium_pages_categories", "Creating Default Titanium Pages Categories Table Settings...");
+
+define("_sql_titanium_poll_comments", "Creating Default Titanium Poll Comments Table Settings...");
+define("_sql_titanium_poll_check", "Creating Default Titanium Poll Check Table Settings...");
+define("_sql_titanium_poll_data", "Creating Default Titanium Poll Data Table Settings...");
+define("_sql_titanium_poll_description", "Creating Default Titanium Poll Description Table Settings...");
+
+define("_sql_titanium_quotes", "Creating Default Titanium Quotes Table Settings...");
+
+define("_sql_titanium_referers", "Creating Default Titanium Referers Table Settings...");
+
+define("_sql_titanium_related", "Creating Default Titanium Related Table Settings...");
+
+define("_sql_titanium_reviews", "Creating Default Titanium Reviews Table Settings...");
+define("_sql_titanium_reviews_add", "Creating Default Titanium Reviews Add Table Settings...");
+define("_sql_titanium_reviews_comments", "Creating Default Titanium Reviews Comments Table Settings...");
+define("_sql_titanium_reviews_main", "Creating Default Titanium Reviews Main Table Settings...");
+
+define("_sql_titanium_security_agents", "Creating Default Titanium Security Agents Table Settings...");
+
+define("_sql_titanium_sessions", "Creating Default Titanium Sessions Table Settings...");
+
+define("_sql_titanium_shoutbox_censor", "Creating Default Titanium ShoutBox Censor Table Settings...");
+define("_sql_titanium_shoutbox_config", "Creating Default Titanium ShoutBox Config Table Settings...");
+define("_sql_titanium_shoutbox_date", "Creating Default Titanium ShoutBox Date Table Settings...");
+define("_sql_titanium_shoutbox_emoticons", "Creating Default Titanium ShoutBox Emoticons Table Settings...");
+define("_sql_titanium_shoutbox_ip_block", "Creating Default Titanium ShoutBox IP Block Table Settings...");
+define("_sql_titanium_shoutbox_manage_count", "Creating Default Titanium ShoutBox Manage Count Table Settings...");
+define("_sql_titanium_shoutbox_name_block", "Creating Default Titanium ShoutBox Name Block Table Settings...");
+define("_sql_titanium_shoutbox_shouts", "Creating Default Titanium ShoutBox Shouts Table Settings...");
+define("_sql_titanium_shoutbox_sticky_shouts", "Creating Default Titanium ShoutBox Sticky Shouts Table Settings...");
+define("_sql_titanium_shoutbox_themes", "Creating Default Titanium ShoutBox Themes Table Settings...");
+define("_sql_titanium_shoutbox_themes_images", "Creating Default Titanium ShoutBox Themes Images Table Settings...");
+define("_sql_titanium_shoutbox_version", "Creating Default Titanium ShoutBox Version Table Settings...");
+
+define("_sql_titanium_sommaire", "Creating Default Sommaire Table Settings...");
+define("_sql_titanium_sommaire_categories", "Creating Default Sommaire Categories Table Settings...");
+
+define("_sql_titanium_stats_hour", "Creating Default Stats Hour Table Settings...");
+
+define("_sql_titanium_subscriptions", "Creating Default Titanium Subscriptions Table Settings...");
+
+define("_sql_titanium_themes", "Creating Default Titanium Themes Table Settings...");
+
+define("_sql_titanium_users", "Creating Default Titanium Users Table Settings...");
+define("_sql_titanium_users_countries", "Creating Default Titanium Users Countries Table Settings...");
+define("_sql_titanium_users_temp", "Creating Default Titanium Users Temp Table Settings...");
+
+define("_sql_titanium_center_last_visitors", "Creating Default Titanium Last Visitors Table Settings...");
+
+define("_sql_titanium_welcome_pm", "Creating Default Titanium Welcome PM Table Settings...");
+
 
 // Step  5
-define("_step5", "Step 5: PHP-AN602 Configuration");
+define("_step5", "Step 5: PHP-Nuke Titanium Configuration");
 
-define("_step5explain", "Now you have to Configure your New PHP-AN602 Tracker.  The following are the Configuration Parameters that are available that allow you to Customize every aspect of the Tracker.  However, you only need to make sure that the Basic Parameters are Set Correctly.  You will always be able to Change these Settings through the (ACP) Administrator Configuration Panel.");
+define("_step5explain", "Now you have to Configure your New PHP-Nuke Titanium Tracker.  The following are the Configuration Parameters that are available that allow you to Customize every aspect of the Tracker.  However, you only need to make sure that the Basic Parameters are Set Correctly.  You will always be able to Change these Settings through the (ACP) Administrator Configuration Panel.");
 
 define("_admpfree_dl", "<strong>Freeleech Torrents</strong>");
 
@@ -285,7 +494,7 @@ define("_admpcookiedomainexplain", "Cookie Domain.  This Must be Set to the Doma
 
 define("_admpcookiepath", "Cookie Path");
 
-define("_admpcookiepathexplain", "Cookie Path.  Change this Setting <strong>ONLY</strong> if PHP-AN602 is Installed in a <strong>Sub-Directory</strong> on your Server.  If your Installation is in <strong>http://yoursite.com/an602</strong>, the Setting should be <strong>/an602</strong>");
+define("_admpcookiepathexplain", "Cookie Path.  Change this Setting <strong>ONLY</strong> if PHP-Nuke Titanium is Installed in a <strong>Sub-Directory</strong> on your Server.  If your Installation is in <strong>http://yoursite.com/an602</strong>, the Setting should be <strong>/an602</strong>");
 
 define("_admpsourcedir", "Source Directory");
 
@@ -457,7 +666,7 @@ define("_admpallow_backup_trackerexplain", "Runs your Tracker as a Backup Tracke
 
 define("_admpstealthmode", "Disable Local Tracker");
 
-define("_admpstealthmodeexplain", "This will Disable and Hide the Local Tracker.  PHP-AN602 will ONLY Accept Externally Tracked Torrents.");
+define("_admpstealthmodeexplain", "This will Disable and Hide the Local Tracker.  PHP-Nuke Titanium will ONLY Accept Externally Tracked Torrents.");
 
 define("_step5complete", "Tracker is now Configured.  Now Create your Administrator Account and get ready to Log in!");
 
@@ -481,18 +690,18 @@ define("_step6complete", "Administrator Account Successfully Created.  Now you a
 // Step 7
 define("_step7", "<strong>Installation Complete!</strong>");
 
-define("_step7explain", "Congratulations!  PHP-AN602 has now been Installed and Configured.  Now you can start using your Brand New Tracker and Start Sharing Files!  Before starting, keep in mind the following:-");
+define("_step7explain", "Congratulations!  PHP-Nuke Titanium has now been Installed and Configured.  Now you can start using your Brand New Tracker and Start Sharing Files!  Before starting, keep in mind the following:-");
 
 define("_thingstodo", "<ul>\n
-<li><p>Please Delete the <em>setup</em> Directory!  For Security Reasons, PHP-AN602 will NOT work until the Directory is Deleted.</p></li>\n
+<li><p>Please Delete the <em>setup</em> Directory!  For Security Reasons, PHP-Nuke Titanium will NOT work until the Directory is Deleted.</p></li>\n
 <li><p>Use the Account you just Created to Set your Tracker Preferences to Create your Peer-to-Peer Community.  Don't Share your Administrator Password.</p></li>\n
 <li><p>Please remember to Run the Database Optimiser often.  It's an Important Tool to keep the Tracker efficient when Server Load Grows.</p></li>\n
 <li><p>If you need Help from Trusted Users to Manage the Tracker.  Remember that Moderators can Freely Manage Torrents without them needing Access to the Administration Panel.</p></li>\n
 <li><p>Finally, remember that Culture Exchange is Freedom, but Piracy is a Crime.</p></li>\n
-<li><p>If you like PHP-AN602, why don't you consider making a Small <strong>Donation</strong> to those who wrote it in order to help keep the Project Alive and Updated?</p></li>\n
+<li><p>If you like PHP-Nuke Titanium, why don't you consider making a Small <strong>Donation</strong> to those who wrote it in order to help keep the Project Alive and Updated?</p></li>\n
 </ul>\n");
 
-define("_thanks", "Thank you for choosing this fantastic Open Source Software.  Regards, The PHP-AN602 Team!");
-define("_enter", "Enter PHP-AN602");
+define("_thanks", "Thank you for choosing this fantastic Open Source Software.  Regards, The PHP-Nuke Titanium Group!");
+define("_enter", "Enter PHP-Nuke Titanium");
 
 ?>

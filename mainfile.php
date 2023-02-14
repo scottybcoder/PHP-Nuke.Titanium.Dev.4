@@ -924,7 +924,7 @@ function blocks($side, $count=false)
 
 	$side = strtolower((string) $side[0]);
 
-	if(!($blocks = $cache->load('blocks', 'titanium_config'))): 
+	if(!($blocks = $cache->load('blocks', 'config'))): 
 
 	    $sql = 'SELECT * FROM `'.$prefix.'_blocks` WHERE `active`="1" '.$querylang.' ORDER BY `weight` ASC';
         $result = $db->sql_query($sql);
@@ -934,7 +934,7 @@ function blocks($side, $count=false)
         endwhile;
 
 		$db->sql_freeresult($result);
-        $cache->save('blocks', 'titanium_config', $blocks);
+        $cache->save('blocks', 'config', $blocks);
 
 	endif;
 
@@ -959,11 +959,11 @@ function blocks($side, $count=false)
 
    	        if($action == 'd'): 
                    $db->sql_query('UPDATE `'.$prefix.'_blocks` SET `active`="0", `expire`="0" WHERE `bid`="'.$bid.'"');
-                   $cache->delete('blocks', 'titanium_config');
+                   $cache->delete('blocks', 'config');
                    return;
    			elseif($action == 'r'): 
                    $db->sql_query('DELETE FROM `'.$prefix.'_blocks` WHERE `bid`="'.$bid.'"');
-                   $cache->delete('blocks', 'titanium_config');
+                   $cache->delete('blocks', 'config');
                    return;
                endif;
 
@@ -1112,9 +1112,9 @@ function blog_ultramode()
 		     `t`.`topictext`, 
 		    `t`.`topicimage` 
 			
-	FROM `".$prefix."_stories` `s` 
+	FROM `".$prefix."_blogs` `s` 
 	
-	LEFT JOIN `".$prefix."_topics` `t` 
+	LEFT JOIN `".$prefix."_blogs_topics` `t` 
 	
 	ON `t`.`topicid` = `s`.`topic` 
 	
@@ -1158,29 +1158,29 @@ function ultramode()
 	$querylang = '';
 	else
 	$querylang = "AND s.alanguage = ''";
-
-    $sql = "SELECT `s.sid`, 
-	             `s.catid`, 
-				   `s.aid`, 
-				 `s.title`, 
-		 `s.datePublished`, 
-		  `s.dateModified`, 
-		      `s.hometext`, 
-			  `s.comments`, 
-			     `s.topic`, 
-				 `s.ticon`, 
-		     `t.topictext`, 
-			`t.topicimage` 
+    
+	$sql = "SELECT `s`.`sid`, 
+	             `s`.`catid`, 
+				   `s`.`aid`, 
+				 `s`.`title`, 
+		 `s`.`datePublished`, 
+		  `s`.`dateModified`, 
+		      `s`.`hometext`, 
+			  `s`.`comments`, 
+			     `s`.`topic`, 
+				 `s`.`ticon`, 
+		     `t`.`topictext`, 
+		    `t`.`topicimage` 
 			
-	FROM `".$prefix."_stories` s 
+	FROM `".$prefix."_blogs` `s` 
 	
-	LEFT JOIN `".$prefix."_topics` t 
+	LEFT JOIN `".$prefix."_blogs_topics` `t` 
 	
-	ON t.topicid = s.topic 
+	ON `t`.`topicid` = `s`.`topic` 
 	
-	WHERE s.ihome = '0' ".$querylang." 
+	WHERE `s`.`ihome` = '0' ".$querylang." 
 	
-	ORDER BY s.datePublished DESC LIMIT 0,10";
+	ORDER BY `s`.`datePublished` DESC LIMIT 0,10";
     
 	$result = $db->sql_query($sql);
 
@@ -1228,10 +1228,16 @@ function Remove_Slashes($str)
 	return $_GETVAR->stripSlashes($str);
 }
 
-# check_words function by ReOrGaNiSaTiOn
+/*
+* check_words function by ReOrGaNiSaTiOn and Ernest Buffington
+* @Date 01/25/2023 1:44 am
+* @Since v4.0.3
+**/
 function check_words($message) 
 {
     global $censor_words;
+
+    $censor_words = [];
 
     if(empty($message)): 
       return '';
@@ -1241,15 +1247,15 @@ function check_words($message)
       return $message;
 	endif;
     
-	$orig_word = array();
-    $replacement_word = array();
-    
+	$orig_word = [];
+    $replacement_word = [];
+         
 	foreach($censor_words as $word => $replacement ): 
-      $orig_word[] = '#\b(' . str_replace('\*', '\w*?', preg_quote($word, '#')) . ')\b#i';
+      $orig_word[] = '#\b(' . str_replace('\*', '\w*?', preg_quote((string) $word, '#')) . ')\b#i';
       $replacement_word[] = $replacement;
     endforeach;
     
-	$return_message = preg_replace($orig_word, $replacement_word, $message);
+	$return_message = preg_replace($orig_word, $replacement_word, (string) $message);
 
     return $return_message;
 }
@@ -1366,7 +1372,7 @@ function get_microtime()
 # Mod: Blog Signature v1.0.0 START
 function blog_signature($aid) 
 {
-    global $user_prefix, $db;
+    global $user_prefix, $db, $userinfo;
     static $users;
 
     if(is_array(isset($users[$aid]))):
@@ -1386,7 +1392,20 @@ function blog_signature($aid)
 											        `user_occ` 
 
 											FROM `'.$user_prefix.'_users` WHERE `username`="'.$aid.'"', SQL_NUM);
-     $aid  = '';				   
+     # added for blog preview START     
+	 if(!isset($name))
+	 $name = $userinfo['username'];
+	 if(!isset($avatar))
+     $avatar = 'blank.png';
+	 if(!isset($email))
+     $email = $userinfo['user_email'];
+     # added for blog preview END     
+	 
+	 $aid  = '';
+	 
+	 if($name == 'Francisco Burzi')
+	 $aid .= 'Adiós Cordialmente,<br />';				   
+     else	 
      $aid .= 'Sincerely,<br />';
      $aid .= $name.'<br />';				   				   
      $aid .= '<br />';				   
@@ -1447,16 +1466,17 @@ function getTopics($s_sid)
     $sid = (int) $s_sid;
 
 	$sql = 'SELECT t.`topicname`, t.`topicimage`, t.`topictext` 
-	FROM (`'._STORIES_TABLE.'` s 
-	LEFT JOIN `'._TOPICS_TABLE.'` t 
+	FROM (`'._BLOGS_TABLE.'` s 
+	LEFT JOIN `'._BLOG_TOPICS_TABLE.'` t 
 	ON t.`topicid` = s.`topic`) 
 	WHERE s.`sid` = "'.$sid.'"';
 
 	$result = $db->sql_query($sql);
     $row = $db->sql_fetchrow($result);
     $db->sql_freeresult($result);
-    $topicname = $row['topicname'];
-    $topicimage = $row['topicimage'];
+    $topicname = $row['topicname'] ?? '';
+    $topicimage = $row['topicimage'] ?? '';
+	if(isset($row['topictext']))
     $topictext = stripslashes((string) $row['topictext']);
 }
 
@@ -2135,7 +2155,7 @@ function UsernameColorBBC($username, $old_name=false) {
 
     if($old_name) { $username = $old_name; }
     
-    if ((($cached_names = $cache->load('Horndonkle_UserColors', 'titanium_config'.$horndonkle_username)) === false) || empty($cached_names) && !isset($cached_names)) 
+    if ((($cached_names = $cache->load('Horndonkle_UserColors', 'config'.$horndonkle_username)) === false) || empty($cached_names) && !isset($cached_names)) 
 	{
 	        list($user_color, $uname) = $db->sql_ufetchrow("SELECT `user_color_gc`, `username` FROM `" . $user_prefix . "_users` WHERE `username` = '" . str_replace("'", "\'", $username) . "'", SQL_NUM);
 
@@ -2146,7 +2166,7 @@ function UsernameColorBBC($username, $old_name=false) {
 			$username = $uname;
 			endif;
  			$cached_names = $username;
-            $cache->save('Horndonkle_UserColors', 'titanium_config'.$horndonkle_username, $cached_names);
+            $cache->save('Horndonkle_UserColors', 'config'.$horndonkle_username, $cached_names);
 		endif;
     }
 
@@ -2167,9 +2187,13 @@ function UsernameColor($username, $old_name=false)
     global $db, $user_prefix, $use_colors, $cache;
 
     static $cached_names;
+	$horndonkle_name = '';
 	
-	$horndonkle_name = md5($username);
-
+	$cached_names = [];
+	
+	if(!isset($plain_username))
+	$plain_username = '';
+	
     if($old_name): 
 	  $username = $old_name; 
 	endif;
@@ -2178,17 +2202,22 @@ function UsernameColor($username, $old_name=false)
 	  return $username;
 	endif;
 
-    $plain_username = strtolower((string) $username);
- 
-    if(isset($cached_names[$plain_username])): 
-      return $cached_names[$plain_username];
-	endif;
+    if(isset($username)):
+	  $horndonkle_name = md5((string) $username);
+      $plain_username = strtolower((string) $username);
+    endif;
     
-    if(!is_array($cached_names)): 
-      $cached_names = $cache->load('Horndonkle_UserNameColors_'.$horndonkle_name, 'titanium_config');
+	if(isset($cached_names[$plain_username])):
+	  if(isset($plain_username) && ($cached_names[$plain_username])): 
+        return $cached_names[$plain_username];
+	  endif;
+    endif;
+    
+	if(!is_array($cached_names)): 
+      $cached_names = $cache->load('Horndonkle_UserNameColors_'.$horndonkle_name, 'config');
     endif;
 
-   if (!($cached_names = $cache->load('Horndonkle_UserNameColors_'.$horndonkle_name, 'titanium_config'))):
+   if (!($cached_names = $cache->load('Horndonkle_UserNameColors_'.$horndonkle_name, 'config'))):
     if (!isset($cached_names[$plain_username])):
         $cached_names = [];
 		[$user_color, $uname] = $db->sql_ufetchrow("SELECT `user_color_gc`, `username` FROM `" . $user_prefix . "_users` WHERE `username` = '" . str_replace("'", "\'", (string) $username) . "'", SQL_NUM);
@@ -2196,7 +2225,7 @@ function UsernameColor($username, $old_name=false)
         $username = (strlen((string) $user_color) == 6) ? '<span style="color: #'. $user_color .'">'. $uname .'</span>' : $uname;
         if(!empty($username))
 		$cached_names[$plain_username] = $username;
-        $cache->save('Horndonkle_UserNameColors_'.$horndonkle_name, 'titanium_config', $cached_names);
+        $cache->save('Horndonkle_UserNameColors_'.$horndonkle_name, 'config', $cached_names);
 	endif;
    endif;
 

@@ -1,12 +1,12 @@
 <?php
 /**
 *****************************************************************************************
-** PHP-AN602  (Titanium Edition) v1.0.0 - Project Start Date 11/04/2022 Friday 4:09 am **
+** PHP-Nuke Titanium v4.0.4 - Project Start Date 11/04/2022 Friday 4:09 am             **
 *****************************************************************************************
-** https://an602.86it.us/
-** https://github.com/php-an602/php-an602
-** https://an602.86it.us/index.php (DEMO)
-** Apache License, Version 2.0, MIT license 
+** https://www.php-nuke-titanium.86it.us
+** https://github.com/ernestbuffington/PHP-Nuke.Titanium.Dev.4
+** https://www.php-nuke-titanium.86it.us/index.php (DEMO)
+** Apache License, Version 2.0. MIT license 
 ** Copyright (C) 2021
 ** Formerly Known As PHP-Nuke by Francisco Burzi <fburzi@gmail.com>
 ** Created By Ernest Allen Buffington (aka TheGhost or Ghost) <ernest.buffington@gmail.com>
@@ -51,9 +51,9 @@ persistency : Connection Persistency
 --------------------------------- */
 $db_type        = "MySQLi";
 $db_host        = "localhost";
-$db_user        = "phpnuke_user";
-$db_pass        = "xwdNPADv86pn";
-$db_name        = "phpnuke_db2";
+$db_user        = "theghost_abode";
+$db_pass        = "xwdNPADv86ha";
+$db_name        = "theghost_abode";
 $db_prefix      = "nuke"; //Without "_"
 $db_persistency = false;
 
@@ -65,9 +65,9 @@ Key Pair to Enable RSA.
 You can Copy & Paste the rsa_keygen Output
 --------------------------------- */
 $use_rsa     = false;
-$rsa_modulo  = 32366461;
-$rsa_public  = 9059;
-$rsa_private = 28279883;
+$rsa_modulo  = 26925823;
+$rsa_public  = 9151;
+$rsa_private = 25015351;
 
 /*----------------------------------
 Torrent Upload Directory
